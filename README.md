@@ -11,26 +11,33 @@ Chatbots can't tell the difference between a developer's instructions and a user
 AI Guardrail is a **three-layer filter** that sits in front of a chatbot and checks every incoming message before it reaches the model:
 
 ```
-User Input
-    │
-    ▼
-┌──────────────────────┐
-│ Layer 1: Normalizer  │  Detects language, translates non-English
-│                      │  input to English
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ Layer 2: Rule Matcher│  Checks against a regex blocklist of known
-│                      │  attack phrases; catches
-│                      │  obvious attacks instantly
-└──────────┬───────────┘
-           ▼ (only if Layer 2 passes)
-┌──────────────────────┐
-│ Layer 3: ML Model    │  A trained classifier catches disguised or
-│                      │  rephrased attacks that don't match any
-│                      │  known pattern
-└──────────┬───────────┘
-           ▼
+
+    User Input
+        │
+        |
+-----------------------
+| Layer 1: Normalizer |
+|                     |
+|                     |
+-----------------------  Detects language, translates non-English 
+  input to English
+         |
+         |
+-----------------------
+| Layer 2: Rule-based |
+| filter              |   Checks against a regex blocklist of known
+|                     |   attack phrases; catches instantly.
+|                     |                          
+----------------------- 
+          |
+          |          (only if Layer 2 passes)                       
+-----------------------
+| Layer 3: ML Model   |   A trained classifier catches disguised or
+|                     |   rephrased attacks that don't match any
+|                     |   known pattern
+-----------------------                        
+          |
+          |
       PASS or BLOCK
 ```
 
@@ -40,16 +47,16 @@ Each layer only runs if the one before it didn't already block the message keepi
 
 ```
 ai-guardrail/
-├── data/                       # Training datasets
-│   └── merged_dataset.csv
-├── models/                     # Saved, trained model files
-│   ├── classifier.pkl
-│   └── vectorizer.pkl
-├── guardrail.py                # Core detection engine (all 3 layers)
-├── app.py                      # Streamlit dashboard (the interface)
-├── data_prep_and_training.ipynb  # Notebook: dataset cleaning + model training
-├── requirements.txt
-└── README.md
+|- data/                       # Training datasets
+|   |__ merged_dataset.csv
+|-- models/                     # Saved, trained model files
+|   |-- classifier.pkl
+│   |-- vectorizer.pkl
+|-- guardrail.py                # Core detection engine (all 3 layers)
+|-- app.py                      # Streamlit dashboard (the interface)
+|-- data_prep_and_training.ipynb  # Notebook: dataset cleaning + model training
+|-- requirements.txt
+|-- README.md
 ```
 
 ## Installation
